@@ -1,114 +1,5 @@
-# services:
-#   backend:
-#     build:
-#       context: ./src/backend
-#       dockerfile: docker/Dockerfile
-#     container_name: backend_service
-#     ports:
-#       - "8000:8000"
-#     volumes:
-#       - ./src/backend:/app
-#     env_file:
-#       - .env
-#     depends_on:
-#       - db
-#     networks:
-#       - simulation_network
-
-#   frontend:
-#     build:
-#       context: ./src/frontend
-#       dockerfile: Dockerfile
-#     container_name: frontend_service
-#     ports:
-#       - "3000:3000"
-#     volumes:
-#       - ./src/frontend:/app
-#     networks:
-#       - simulation_network
-
-#   db:
-#     image: postgres:13
-#     container_name: db
-#     environment:
-#       POSTGRES_USER: postgres
-#       POSTGRES_PASSWORD: postgres
-#       POSTGRES_DB: simulation_ai
-#     ports:
-#       - "5432:5432"
-#     volumes:
-#       - db_data:/var/lib/postgresql/data
-#     networks:
-#       - simulation_network
-
-# volumes:
-#   db_data:
-
-# networks:
-#   simulation_network:
-
-# services:
-#   backend:
-#     build:
-#       context: ./src/backend
-#       dockerfile: docker/Dockerfile
-#     container_name: backend_service
-#     ports:
-#       - "8000:8000"
-#     volumes:
-#       - ./src/backend:/app
-#     env_file:
-#       - .env
-#     depends_on:
-#       - db
-#     networks:
-#       - simulation_network
-#     healthcheck:
-#       test: ["CMD-SHELL", "curl -f http://localhost:8000/health || exit 1"]
-#       interval: 10s
-#       timeout: 5s
-#       retries: 3
-
-#   frontend:
-#     build:
-#       context: ./src/frontend
-#       dockerfile: Dockerfile
-#     container_name: frontend_service
-#     ports:
-#       - "3000:3000"
-#     volumes:
-#       - ./src/frontend:/app
-#     depends_on:
-#       - backend
-#     networks:
-#       - simulation_network
-
-#   db:
-#     image: postgres:13
-#     container_name: db
-#     environment:
-#       POSTGRES_USER: postgres
-#       POSTGRES_PASSWORD: postgres
-#       POSTGRES_DB: simulation_ai
-#     ports:
-#       - "5432:5432"
-#     volumes:
-#       - db_data:/var/lib/postgresql/data
-#     networks:
-#       - simulation_network
-#     healthcheck:
-#       test: ["CMD-SHELL", "pg_isready -U postgres"]
-#       interval: 10s
-#       timeout: 5s
-#       retries: 3
-
-# volumes:
-#   db_data:
-
-# networks:
-#   simulation_network:
-
 services:
+  # Backend service
   backend:
     build:
       context: ./src/backend
@@ -130,6 +21,7 @@ services:
       timeout: 5s
       retries: 3
 
+  # Frontend service
   frontend:
     build:
       context: ./src/frontend
@@ -144,6 +36,7 @@ services:
     networks:
       - simulation_network
 
+  # Database service
   db:
     image: postgres:13
     container_name: db
@@ -163,6 +56,7 @@ services:
       timeout: 5s
       retries: 3
 
+  # Backend tests
   tests-backend:
     build:
       context: ./src/backend
@@ -179,6 +73,7 @@ services:
     networks:
       - simulation_network
 
+  # Frontend tests
   tests-frontend:
     build:
       context: ./src/frontend
@@ -188,7 +83,7 @@ services:
     volumes:
       - ./src/frontend:/app
     depends_on:
-      - frontend
+      - backend # Dépendance correcte pour tester le frontend avec le backend
     networks:
       - simulation_network
 

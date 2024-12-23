@@ -1,0 +1,39 @@
+name: CI Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  backend-tests:
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: postgres:13
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Run backend tests with Docker
+        run: |
+          docker-compose -f docker/docker-compose.yml run --rm backend pytest src/backend/tests/
+
+  frontend-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Run frontend tests
+        run: |
+          cd src/frontend
+          yarn install
+          yarn test
