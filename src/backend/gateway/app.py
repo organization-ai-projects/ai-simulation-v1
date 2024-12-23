@@ -30,10 +30,9 @@ async def root():
     return {"message": "Bienvenue dans l'API Simulation AI"}
 
 
-# Route de vérification de santé
 @app.get("/health")
 async def health_check():
-    return {"status": "ok"}
+    return {"status": "healthy"}
 
 
 if __name__ == "__main__":

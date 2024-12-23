@@ -1,42 +1,34 @@
-# # Utiliser une image Python officielle
-# FROM python:3.10-slim
+# Étape 1 : Base commune
+FROM python:3.10-slim AS base
 
-# # Définir le répertoire de travail
-# WORKDIR /app
-
-# # Copier et installer les dépendances
-# COPY ../../requirements.txt .
-# RUN pip install --no-cache-dir -r requirements.txt
-
-# # Copier tout le code source
-# COPY ../../ .
-
-# # Exposer le port pour le backend
-# EXPOSE 8000
-
-# # Lancer le serveur FastAPI
-# CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
-
-# Étape 1 : Utiliser une image Python officielle
-FROM python:3.10-slim
-
-# Définir le répertoire de travail
+# Répertoire de travail
 WORKDIR /app
 
-# Copier le fichier de dépendances
-COPY ./requirements.txt ./requirements.txt
-
-# Installer les dépendances
+# Installer les dépendances principales
+COPY ../requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copier tout le code source
-COPY ./ ./src
+# Étape 2 : Environnement de tests
+FROM base AS testing
 
-# Configurer le PYTHONPATH pour inclure le dossier `src`
-ENV PYTHONPATH=/app/src
+# Ajouter les dépendances spécifiques aux tests
+COPY ../requirements-test.txt .
+RUN pip install --no-cache-dir -r requirements-test.txt
 
-# Exposer le port pour le backend
-EXPOSE 8000
+# Copier le code source et les tests
+COPY .. .
 
-# Lancer le serveur FastAPI
+# Configurer le chemin pour les tests
+ENV PYTHONPATH=/app
+
+# Commande pour exécuter les tests
+CMD ["pytest", "--maxfail=5", "--disable-warnings", "tests"]
+
+# Étape 3 : Environnement de production
+FROM base AS production
+
+# Copier uniquement le code source nécessaire
+COPY .. .
+
+# Commande pour exécuter le serveur FastAPI
 CMD ["uvicorn", "gateway.app:app", "--host", "0.0.0.0", "--port", "8000"]
