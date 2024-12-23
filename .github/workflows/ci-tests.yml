@@ -58,7 +58,11 @@ jobs:
           node-version: "18"
 
       - name: Install dependencies
-        run: yarn install
+        run: |
+          cd src/frontend
+          yarn install
 
       - name: Run frontend tests
-        run: yarn test
+        run: |
+          cd src/frontend
+          yarn test
