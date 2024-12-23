@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.env
+
+# Node.js
+node_modules/
+build/
+dist/
+
+# Docker logs ou fichiers spécifiques au runtime
+*.log
+.dockerignore
+docker-compose.override.yml # Si utilisé uniquement pour la configuration locale
+
+# IDE/éditeur
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Données sensibles (ex. : clés privées, fichiers de secrets)
+.env
+.env.*
+
+structure*.txt

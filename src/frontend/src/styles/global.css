@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --primary-color: theme('colors.primary.DEFAULT');
+    --secondary-color: theme('colors.secondary.DEFAULT');
+    --background-primary: theme('colors.background.primary');
+    --background-secondary: theme('colors.background.secondary');
+    --text-primary: theme('colors.text.primary');
+    --text-secondary: theme('colors.text.secondary');
+    --error-color: theme('colors.error');
+    --success-color: theme('colors.success');
+  }
+
+  body {
+    @apply font-sans leading-normal text-text-primary bg-background-primary m-0 p-0;
+  }
+}
+
+@layer components {
+  .container {
+    @apply w-full max-w-7xl mx-auto px-4;
+  }
+}

@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+ray[default]
+sqlalchemy
+psycopg2-binary
+pymongo
+kombu
+python-dotenv
+pydantic
