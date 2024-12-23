@@ -32,10 +32,11 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: 3.10
-      - name: Install Backend Dependencies
+      - name: Setup Python Environment
         run: |
-          cd src/backend
-          pip install -r requirements.txt
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r src/backend/requirements.txt
       - name: Test Backend
         run: |
           cd src/backend
